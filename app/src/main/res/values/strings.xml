@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Factorizer App</string>
+    <string name="entry_hint_text">Number to factorize</string>
+    <string name="bt_factorize_text">Factorize</string>
+    <string name="tv_default_value">0</string>
+    <string name="tv_result_title">Factors of number 0 is:</string>
+    <string name="error_invalid_entry">Please enter Valid Entry</string>
+    <string name="error_empty_entry">You can\'t leave the entry field empty</string>
+    <string name="progress_cancel">The factorization is being cancelled</string>
+</resources>
