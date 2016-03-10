@@ -2,10 +2,11 @@ package myapp.tae.ac.uk.myfactorizerapp.ui;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,11 +16,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import myapp.tae.ac.uk.myfactorizerapp.R;
-import myapp.tae.ac.uk.myfactorizerapp.presenter.FactorizerView;
 import myapp.tae.ac.uk.myfactorizerapp.presenter.FactorizerPresenter;
 import myapp.tae.ac.uk.myfactorizerapp.presenter.FactorizerService;
+import myapp.tae.ac.uk.myfactorizerapp.presenter.FactorizerView;
 
-public class MainFactorizer extends AppCompatActivity implements FactorizerView {
+/**
+ * Created by Karma on 10/03/16.
+ */
+public class FactorizerFragment extends Fragment implements FactorizerView {
     @Bind(R.id.etInputEntry)
     EditText etInputEntry;
     @Bind(R.id.tvResultTitle)
@@ -32,24 +36,25 @@ public class MainFactorizer extends AppCompatActivity implements FactorizerView 
     private ProgressDialog progressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_layout, container, false);
+        ButterKnife.bind(this, view);
         presenter = new FactorizerPresenter(this, new FactorizerService());
         setupProgressDialog();
+        return view;
     }
 
     private void setupProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Factorization is in Progress");
-        progressDialog.setCancelable(true);
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                presenter.cancelBackgroundTask();
-            }
-        });
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Factorization is in Progress");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
 
     @OnClick(R.id.btFactorize)
@@ -73,13 +78,19 @@ public class MainFactorizer extends AppCompatActivity implements FactorizerView 
     }
 
     @Override
-    public boolean cancelFactorizationProgress() {
-        presenter.cancelBackgroundTask();
-        return true;
+    public void showCancelledToast(int resId) {
+        Toast.makeText(getActivity(), getString(resId), Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showCancelledToast(int resId) {
-        Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show();
+    public ProgressDialog getProgressDialog() {
+        return progressDialog;
+    }
+
+    @Override
+    public void updateResult(String result) {
+        tvResultTitle.setText("Factors of " + etInputEntry.getText() + " are:");
+        tvResult.setText(result);
     }
 }
+

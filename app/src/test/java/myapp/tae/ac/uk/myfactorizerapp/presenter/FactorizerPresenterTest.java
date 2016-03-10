@@ -8,7 +8,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import myapp.tae.ac.uk.myfactorizerapp.R;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,7 +24,7 @@ public class FactorizerPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        presenter = new FactorizerPresenter(view, service);
+        presenter = new FactorizerPresenter(view, new FactorizerService());
     }
 
     @Test
@@ -49,7 +48,6 @@ public class FactorizerPresenterTest {
     public void showMessageOnCancelledProgress() throws Exception {
         when(view.getInputEntry()).thenReturn("20");
         presenter.onFactorizeButtonClicked();
-        when(view.cancelFactorizationProgress()).thenReturn(true);
 
         verify(view).showCancelledToast(R.string.progress_cancel);
     }

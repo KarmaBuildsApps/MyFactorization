@@ -1,5 +1,7 @@
 package myapp.tae.ac.uk.myfactorizerapp.presenter;
 
+import android.app.ProgressDialog;
+
 /**
  * Created by Karma on 10/03/16.
  */
@@ -10,7 +12,9 @@ public interface FactorizerView {
 
     void showEmptyEntryError(int resId);
 
-    boolean cancelFactorizationProgress();
-
     void showCancelledToast(int resId);
+
+    ProgressDialog getProgressDialog();
+
+    void updateResult(String string);
 }

@@ -2,7 +2,10 @@ package myapp.tae.ac.uk.myfactorizerapp.presenter;
 
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 import myapp.tae.ac.uk.myfactorizerapp.R;
+import myapp.tae.ac.uk.myfactorizerapp.ui.BackgroundTask;
 
 /**
  * Created by Karma on 10/03/16.
@@ -28,11 +31,15 @@ public class FactorizerPresenter {
             view.showInvalidEntryError(R.string.error_invalid_entry);
             return;
         }
+        double number = Double.parseDouble(inptEntry);
+        factorizeInBackground(number);
     }
 
-    public void cancelBackgroundTask() {
+
+    public void factorizeInBackground(double number) {
+        BackgroundTask task = new BackgroundTask(view.getProgressDialog());
+        task.setFactorizerView(view);
+        task.execute(number);
 
     }
-
-
 }
